@@ -13,6 +13,7 @@ from langchain.llms import HuggingFaceHub
 
 
 openai.api_key = st.secrets["API_KEYS"]["openai"]
+OPENAI_API_KEY = st.secrets["API_KEYS"]["openai"]
 
 def get_pdf_text(pdf_docs):
     text = ""
