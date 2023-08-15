@@ -1,4 +1,5 @@
 import streamlit as st
+import openai
 from dotenv import load_dotenv
 from PyPDF2 import PdfReader
 from langchain.text_splitter import CharacterTextSplitter
@@ -65,6 +66,9 @@ def handle_userinput(user_question):
 
 
 def main():
+
+    openai.api_key = st.secrets["API_KEYS"]["openai"]
+
     load_dotenv()
     st.set_page_config(page_title="Chat with multiple PDFs",
                        page_icon=":books:")
