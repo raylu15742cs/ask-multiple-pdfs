@@ -10,12 +10,15 @@ from langchain.memory import ConversationBufferMemory
 from langchain.chains import ConversationalRetrievalChain
 from htmlTemplates import css, bot_template, user_template
 from langchain.llms import HuggingFaceHub
-
+import pinecone
 
 from langchain.vectorstores import Pinecone
 
 openai.api_key = st.secrets["API_KEYS"]["openai"]
 OPENAI_API_KEY = st.secrets["API_KEYS"]["openai"]
+pinecone_api_key = st.secrets["API_KEYS"]["pinecone"]
+
+pinecone.init(api_key=pinecone_api_key, environment="asia-southeast1-gcp-free")
 
 INDEX_NAME = 'salesforcedocs'
 
