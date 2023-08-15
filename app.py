@@ -12,8 +12,12 @@ from htmlTemplates import css, bot_template, user_template
 from langchain.llms import HuggingFaceHub
 
 
+from langchain.vectorstores import Pinecone
+
 openai.api_key = st.secrets["API_KEYS"]["openai"]
 OPENAI_API_KEY = st.secrets["API_KEYS"]["openai"]
+
+INDEX_NAME = 'salesforcedocs'
 
 def get_pdf_text(pdf_docs):
     text = ""
@@ -38,7 +42,7 @@ def get_text_chunks(text):
 def get_vectorstore(text_chunks):
     embeddings = OpenAIEmbeddings(openai_api_key=OPENAI_API_KEY)
     # embeddings = HuggingFaceInstructEmbeddings(model_name="hkunlp/instructor-xl")
-    vectorstore = FAISS.from_texts(texts=text_chunks, embedding=embeddings)
+    vectorstore = Pinecone.from_documents(text_chunks, embedding=embeddings, index_name=INDEX_NAME)
     return vectorstore
 
 
@@ -104,6 +108,9 @@ def main():
                 # create conversation chain
                 st.session_state.conversation = get_conversation_chain(
                     vectorstore)
+    embeddings = OpenAIEmbeddings(openai_api_key=OPENAI_API_KEY)
+    vectorstore = Pinecone.from_existing_index(index_name=INDEX_NAME, embedding=embeddings)
+    st.session_state.conversation = get_conversation_chain(vectorstore)
 
 
 if __name__ == '__main__':
