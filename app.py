@@ -14,6 +14,8 @@ import pinecone
 
 from langchain.vectorstores import Pinecone
 
+from langchain.docstore.document import Document
+
 openai.api_key = st.secrets["API_KEYS"]["openai"]
 OPENAI_API_KEY = st.secrets["API_KEYS"]["openai"]
 pinecone_api_key = st.secrets["API_KEYS"]["pinecone"]
@@ -39,7 +41,9 @@ def get_text_chunks(text):
         length_function=len
     )
     chunks = text_splitter.split_text(text)
-    return chunks
+
+    docs = [Document(page_content=text) for text in chunks]
+    return docs
 
 
 def get_vectorstore(text_chunks):
