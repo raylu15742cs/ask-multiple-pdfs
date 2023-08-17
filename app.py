@@ -19,6 +19,7 @@ pinecone.init(api_key=pinecone_api_key, environment="asia-southeast1-gcp-free")
 
 INDEX_NAME = 'salesforcedocs'
 
+# get pdf text
 def get_pdf_text(pdf_docs):
     text = ""
     for pdf in pdf_docs:
@@ -27,7 +28,7 @@ def get_pdf_text(pdf_docs):
             text += page.extract_text()
     return text
 
-
+# get the text chunks
 def get_text_chunks(text):
     text_splitter = CharacterTextSplitter(
         separator="\n",
@@ -40,13 +41,13 @@ def get_text_chunks(text):
     docs = [Document(page_content=text) for text in chunks]
     return docs
 
-
+# create vector store
 def get_vectorstore(text_chunks):
     embeddings = OpenAIEmbeddings(openai_api_key=OPENAI_API_KEY)
     vectorstore = Pinecone.from_documents(text_chunks, embedding=embeddings, index_name=INDEX_NAME)
     return vectorstore
 
-
+# create conversation chain
 def get_conversation_chain(vectorstore):
     llm = ChatOpenAI(openai_api_key=OPENAI_API_KEY)
 
@@ -59,7 +60,7 @@ def get_conversation_chain(vectorstore):
     )
     return conversation_chain
 
-
+# handle user input
 def handle_userinput(user_question):
     response = st.session_state.conversation({'question': user_question})
     st.session_state.chat_history = response['chat_history']
