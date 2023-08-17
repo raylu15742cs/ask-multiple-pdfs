@@ -1,5 +1,4 @@
 import streamlit as st
-import openai
 from PyPDF2 import PdfReader
 from langchain.text_splitter import CharacterTextSplitter
 from langchain.embeddings import OpenAIEmbeddings
@@ -13,7 +12,6 @@ from langchain.vectorstores import Pinecone
 
 from langchain.docstore.document import Document
 
-openai.api_key = st.secrets["API_KEYS"]["openai"]
 OPENAI_API_KEY = st.secrets["API_KEYS"]["openai"]
 pinecone_api_key = st.secrets["API_KEYS"]["pinecone"]
 
