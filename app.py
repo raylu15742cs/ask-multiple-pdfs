@@ -103,9 +103,6 @@ def main():
                 # create vector store
                 vectorstore = get_vectorstore(text_chunks)
 
-                # create conversation chain
-                st.session_state.conversation = get_conversation_chain(
-                    vectorstore)
     embeddings = OpenAIEmbeddings(openai_api_key=OPENAI_API_KEY)
     vectorstore = Pinecone.from_existing_index(index_name=INDEX_NAME, embedding=embeddings)
     st.session_state.conversation = get_conversation_chain(vectorstore)
